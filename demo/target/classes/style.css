@@ -92,28 +92,3 @@
     -fx-background-color:#dbeafe;
 }
 
-/* Dark Mode Table Fix */
-
-.dark-root .table-view{
-    -fx-background-color:#334155;
-}
-
-.dark-root .table-view .table-cell{
-    -fx-text-fill:white;
-}
-
-.dark-root .table-row-cell{
-    -fx-background-color:#334155;
-}
-
-.dark-root .table-row-cell:selected{
-    -fx-background-color:#2563eb;
-}
-
-.dark-root .table-view .column-header-background{
-    -fx-background-color:#1e293b;
-}
-
-.dark-root .table-view .column-header .label{
-    -fx-text-fill:white;
-}
