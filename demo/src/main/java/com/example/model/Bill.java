@@ -6,11 +6,11 @@ public class Bill {
     private String tenant;
     private double rent;
     private double water;
-    private int electric;
+    private double electric;
 
-    public Bill() {}
+    public Bill(){}
 
-    public Bill(String room, String tenant, double rent, double water, int electric) {
+    public Bill(String room,String tenant,double rent,double water,double electric){
         this.room = room;
         this.tenant = tenant;
         this.rent = rent;
@@ -18,17 +18,28 @@ public class Bill {
         this.electric = electric;
     }
 
-    public String getRoom() { return room; }
-    public String getTenant() { return tenant; }
-    public double getRent() { return rent; }
-    public double getWater() { return water; }
-    public int getElectric() { return electric; }
+    public String getRoom(){
+        return room;
+    }
 
-    public double getElectricCost(){
-        return electric * 8;
+    public String getTenant(){
+        return tenant;
+    }
+
+    public double getRent(){
+        return rent;
+    }
+
+    public double getWater(){
+        return water;
+    }
+
+    public double getElectric(){
+        return electric;
     }
 
     public double getTotal(){
-        return rent + water + getElectricCost();
+        return rent + water + electric;
     }
+
 }
