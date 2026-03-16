@@ -1,9 +1,9 @@
 package com.example.service;
 
+import java.util.List;
+
 import com.example.database.JsonDatabase;
 import com.example.model.Bill;
-
-import java.util.List;
 
 public class BillService {
 
@@ -24,4 +24,10 @@ public class BillService {
         JsonDatabase.saveBills(bills);
 
     }
+
+    public void deleteBill(Bill bill) {
+        bills.remove(bill);
+        JsonDatabase.saveBills(bills);
+    }
+
 }

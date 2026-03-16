@@ -1,0 +1,119 @@
+.root{
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: linear-gradient(to bottom,#f7f9fc,#eef2f7);
+}
+
+/* Header */
+.header{
+    -fx-font-size:30px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#1e293b;
+}
+
+/* Card layout */
+.card{
+    -fx-background-color:white;
+    -fx-background-radius:14;
+    -fx-padding:22;
+    -fx-spacing:15;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.12),12,0,0,4);
+}
+
+/* Dashboard cards */
+.stat-card{
+    -fx-background-color:white;
+    -fx-background-radius:12;
+    -fx-padding:18;
+    -fx-pref-width:200;
+    -fx-effect: dropshadow(gaussian,rgba(0,0,0,0.08),8,0,0,3);
+}
+
+.stat-title{
+    -fx-text-fill:#64748b;
+    -fx-font-size:13px;
+}
+
+.stat-value{
+    -fx-font-size:22px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#1e293b;
+}
+
+/* Text fields */
+.text-field{
+    -fx-pref-height:38;
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+    -fx-border-color:#d1d5db;
+}
+
+/* Buttons */
+.button{
+    -fx-background-radius:8;
+    -fx-font-weight:bold;
+    -fx-background-color:#2563eb;
+    -fx-text-fill:white;
+}
+
+.button:hover{
+    -fx-background-color:#1d4ed8;
+}
+
+/* Delete button */
+.delete-btn{
+    -fx-background-color:#ef4444;
+}
+
+.delete-btn:hover{
+    -fx-background-color:#dc2626;
+}
+
+/* Search box */
+.search-box{
+    -fx-pref-width:200;
+}
+
+/* Table */
+.table-view{
+    -fx-background-radius:10;
+    -fx-border-radius:10;
+}
+
+.table-view .column-header{
+    -fx-background-color:#2563eb;
+}
+
+.table-view .column-header .label{
+    -fx-text-fill:white;
+    -fx-font-weight:bold;
+}
+
+.table-row-cell:selected{
+    -fx-background-color:#dbeafe;
+}
+
+/* Dark Mode Table Fix */
+
+.dark-root .table-view{
+    -fx-background-color:#334155;
+}
+
+.dark-root .table-view .table-cell{
+    -fx-text-fill:white;
+}
+
+.dark-root .table-row-cell{
+    -fx-background-color:#334155;
+}
+
+.dark-root .table-row-cell:selected{
+    -fx-background-color:#2563eb;
+}
+
+.dark-root .table-view .column-header-background{
+    -fx-background-color:#1e293b;
+}
+
+.dark-root .table-view .column-header .label{
+    -fx-text-fill:white;
+}
