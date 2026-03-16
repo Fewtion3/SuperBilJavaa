@@ -6,6 +6,7 @@ import com.example.service.BillService;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,37 +21,38 @@ public class App extends Application {
     @Override
     public void start(Stage stage){
 
+        Label title = new Label("Dorm Billing System");
+        title.getStyleClass().add("header");
+
         TableView<Bill> table = new TableView<>();
 
         TableColumn<Bill,String> roomCol = new TableColumn<>("Room");
         roomCol.setCellValueFactory(data ->
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getRoom()));
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getRoom()));
 
         TableColumn<Bill,String> tenantCol = new TableColumn<>("Tenant");
         tenantCol.setCellValueFactory(data ->
-            new javafx.beans.property.SimpleStringProperty(data.getValue().getTenant()));
+                new javafx.beans.property.SimpleStringProperty(data.getValue().getTenant()));
 
         TableColumn<Bill,Number> rentCol = new TableColumn<>("Rent");
         rentCol.setCellValueFactory(data ->
-            new javafx.beans.property.SimpleDoubleProperty(data.getValue().getRent()));
+                new javafx.beans.property.SimpleDoubleProperty(data.getValue().getRent()));
 
         TableColumn<Bill,Number> waterCol = new TableColumn<>("Water");
         waterCol.setCellValueFactory(data ->
-            new javafx.beans.property.SimpleDoubleProperty(data.getValue().getWater()));
+                new javafx.beans.property.SimpleDoubleProperty(data.getValue().getWater()));
 
         TableColumn<Bill,Number> elecCol = new TableColumn<>("Electric");
         elecCol.setCellValueFactory(data ->
-            new javafx.beans.property.SimpleDoubleProperty(data.getValue().getElectric()));
+                new javafx.beans.property.SimpleDoubleProperty(data.getValue().getElectric()));
 
         TableColumn<Bill,Number> totalCol = new TableColumn<>("Total");
         totalCol.setCellValueFactory(data ->
-            new javafx.beans.property.SimpleDoubleProperty(data.getValue().getTotal()));
+                new javafx.beans.property.SimpleDoubleProperty(data.getValue().getTotal()));
 
         table.getColumns().addAll(roomCol,tenantCol,rentCol,waterCol,elecCol,totalCol);
-
         table.getItems().addAll(service.getBills());
 
-        // INPUT
         TextField roomField = new TextField();
         roomField.setPromptText("Room");
 
@@ -66,7 +68,7 @@ public class App extends Application {
         TextField elecField = new TextField();
         elecField.setPromptText("Electric");
 
-        Button addBtn = new Button("Add");
+        Button addBtn = new Button("Add Bill");
 
         addBtn.setOnAction(e -> {
 
@@ -80,7 +82,6 @@ public class App extends Application {
             Bill bill = new Bill(room,tenant,rent,water,elec);
 
             service.addBill(bill);
-
             table.getItems().add(bill);
 
             roomField.clear();
@@ -113,18 +114,22 @@ public class App extends Application {
                 deleteBtn
         );
 
-        VBox root = new VBox(10,form,table);
+        VBox root = new VBox(15,title,form,table);
 
-        Scene scene = new Scene(root,900,500);
+        root.setPadding(new javafx.geometry.Insets(20));
+
+        Scene scene = new Scene(root,1000,600);
+
+        scene.getStylesheets().add(
+                getClass().getResource("/style.css").toExternalForm()
+        );
 
         stage.setTitle("Dorm Billing System");
         stage.setScene(scene);
         stage.show();
-
     }
 
     public static void main(String[] args){
         launch();
     }
-
 }
