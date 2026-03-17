@@ -16,5 +16,21 @@
       "moveInEpochMs": 1773729503299
     }
   ],
-  "bills": []
+  "bills": [
+    {
+      "id": "697b827f-bd2c-4f42-9b68-ea1bd84f357e",
+      "billingMonth": "2026-03",
+      "roomId": "6a964896-92cf-49e5-be91-add59488d422",
+      "tenantId": "6d867ec3-9758-427e-9424-2c6a6685c8d3",
+      "roomNumber": "704",
+      "tenantName": "johnqt",
+      "rent": 2500.0,
+      "waterUnit": 5.0,
+      "electricUnit": 6.0,
+      "paid": false,
+      "createdAtEpochMs": 1773732755279,
+      "bookingDate": "2026-03-17",
+      "dueDate": "2026-03-24"
+    }
+  ]
 }
