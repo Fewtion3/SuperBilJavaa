@@ -1,81 +1,133 @@
 package com.example.model;
 
 public class Bill {
+    private String id;
+    private String billingMonth; // yyyy-MM
 
-    private String room;
-    private String tenant;
+    private String roomId;   // nullable
+    private String tenantId; // nullable
+
+    // denormalized fallbacks for display/migration
+    private String roomNumber;
+    private String tenantName;
+
     private double rent;
-
-    // unit
     private double waterUnit;
     private double electricUnit;
 
-    // rate
-    private static final double WATER_RATE = 5;
-    private static final double ELECTRIC_RATE = 8;
+    private boolean paid;
+    private long createdAtEpochMs;
 
-    public Bill(){}
+    private static final double WATER_RATE = 5.0;
+    private static final double ELECTRIC_RATE = 8.0;
 
-    public Bill(String room,String tenant,double rent,double waterUnit,double electricUnit){
-        this.room = room;
-        this.tenant = tenant;
-        this.rent = rent;
-        this.waterUnit = waterUnit;
-        this.electricUnit = electricUnit;
+    public Bill() {}
+
+    public String getId() {
+        return id;
     }
 
-    public String getRoom(){
-        return room;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getTenant(){
-        return tenant;
+    public String getBillingMonth() {
+        return billingMonth;
     }
 
-    public double getRent(){
+    public void setBillingMonth(String billingMonth) {
+        this.billingMonth = billingMonth;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getTenantName() {
+        return tenantName;
+    }
+
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
+    }
+
+    public double getRent() {
         return rent;
     }
 
-    public double getWaterUnit(){
-        return waterUnit;
-    }
-
-    public double getElectricUnit(){
-        return electricUnit;
-    }
-
-    // ค่าน้ำ
-    public double getWaterCost(){
-        return waterUnit * WATER_RATE;
-    }
-
-    // ค่าไฟ
-    public double getElectricCost(){
-        return electricUnit * ELECTRIC_RATE;
-    }
-
-    // รวมทั้งหมด
-    public double getTotal(){
-        return rent + getWaterCost() + getElectricCost();
-    }
-
-    public void setRoom(String room){
-        this.room = room;
-    }
-
-    public void setTenant(String tenant){
-        this.tenant = tenant;
-    }
-
-    public void setRent(double rent){
+    public void setRent(double rent) {
         this.rent = rent;
     }
 
-    public void setWaterUnit(double waterUnit){
+    public double getWaterUnit() {
+        return waterUnit;
+    }
+
+    public void setWaterUnit(double waterUnit) {
         this.waterUnit = waterUnit;
     }
 
-    public void setElectricUnit(double electricUnit){
+    public double getElectricUnit() {
+        return electricUnit;
+    }
+
+    public void setElectricUnit(double electricUnit) {
         this.electricUnit = electricUnit;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    public long getCreatedAtEpochMs() {
+        return createdAtEpochMs;
+    }
+
+    public void setCreatedAtEpochMs(long createdAtEpochMs) {
+        this.createdAtEpochMs = createdAtEpochMs;
+    }
+
+    public static double getWaterRate() {
+        return WATER_RATE;
+    }
+
+    public static double getElectricRate() {
+        return ELECTRIC_RATE;
+    }
+
+    public double getWaterCost() {
+        return waterUnit * WATER_RATE;
+    }
+
+    public double getElectricCost() {
+        return electricUnit * ELECTRIC_RATE;
+    }
+
+    public double getTotal() {
+        return rent + getWaterCost() + getElectricCost();
     }
 }

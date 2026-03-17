@@ -1,1 +1,20 @@
-[]
+{
+  "rooms": [
+    {
+      "id": "6a964896-92cf-49e5-be91-add59488d422",
+      "number": "704",
+      "defaultRent": 2500.0,
+      "notes": ""
+    }
+  ],
+  "tenants": [
+    {
+      "id": "6d867ec3-9758-427e-9424-2c6a6685c8d3",
+      "name": "johnqt",
+      "phone": "0969565245",
+      "roomId": "6a964896-92cf-49e5-be91-add59488d422",
+      "moveInEpochMs": 1773729503299
+    }
+  ],
+  "bills": []
+}
