@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +21,11 @@ public class JsonDatabase {
 
     private static final String FILE = "database.json";
 
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder()
+        .setPrettyPrinting()
+        .registerTypeAdapter(LocalDate.class, (com.google.gson.JsonSerializer<LocalDate>) (src, typeOfSrc, context) -> new com.google.gson.JsonPrimitive(src.toString()))
+        .registerTypeAdapter(LocalDate.class, (com.google.gson.JsonDeserializer<LocalDate>) (json, typeOfT, context) -> LocalDate.parse(json.getAsString()))
+        .create();
 
     public static State loadState() {
         try (FileReader reader = new FileReader(FILE)) {
@@ -119,6 +124,8 @@ public class JsonDatabase {
         b.setElectricUnit(legacy.electricUnit);
         b.setPaid(false);
         b.setCreatedAtEpochMs(System.currentTimeMillis());
+        b.setBookingDate(LocalDate.now());
+        b.setDueDate(LocalDate.now().plusDays(7));
         return b;
     }
 }

@@ -5,6 +5,7 @@ import com.example.model.Bill;
 import com.example.model.Room;
 import com.example.model.Tenant;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +25,16 @@ public class BillService {
     }
 
     public Bill createMonthlyBill(String billingMonth, Room room, Tenant tenantOrNull, double waterUnit, double electricUnit) {
+        return createMonthlyBill(billingMonth, room, tenantOrNull, waterUnit, electricUnit, LocalDate.now(), LocalDate.now().plusDays(7));
+    }
+
+    public Bill createMonthlyBill(String billingMonth, Room room, Tenant tenantOrNull, double waterUnit, double electricUnit,
+                                  LocalDate bookingDate, LocalDate dueDate) {
+        if (room == null) throw new IllegalArgumentException("room is required");
+        if (bookingDate == null) throw new IllegalArgumentException("bookingDate is required");
+        if (dueDate == null) throw new IllegalArgumentException("dueDate is required");
+        if (dueDate.isBefore(bookingDate)) throw new IllegalArgumentException("dueDate cannot be before bookingDate");
+
         Bill b = new Bill();
         b.setId(UUID.randomUUID().toString());
         b.setBillingMonth(billingMonth == null || billingMonth.isBlank() ? YearMonth.now().toString() : billingMonth);
@@ -45,6 +56,8 @@ public class BillService {
         b.setElectricUnit(electricUnit);
         b.setPaid(false);
         b.setCreatedAtEpochMs(System.currentTimeMillis());
+        b.setBookingDate(bookingDate);
+        b.setDueDate(dueDate);
 
         state.getBills().add(b);
         state.getBills().sort(Comparator.comparingLong(Bill::getCreatedAtEpochMs).reversed());

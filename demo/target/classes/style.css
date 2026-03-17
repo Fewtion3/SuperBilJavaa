@@ -49,6 +49,19 @@
     -fx-background-color:#fbf8f2;
 }
 
+/* DatePicker (match text field look) */
+.date-picker{
+    -fx-background-color: transparent;
+}
+
+.date-picker .text-field{
+    -fx-pref-height:40;
+    -fx-background-radius:12;
+    -fx-border-radius:12;
+    -fx-border-color:#e7e0d7;
+    -fx-background-color:#fbf8f2;
+}
+
 .text-field:focused{
     -fx-border-color:#3b82f6;
     -fx-background-color:white;

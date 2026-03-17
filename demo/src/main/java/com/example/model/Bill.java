@@ -1,5 +1,7 @@
 package com.example.model;
 
+import java.time.LocalDate;
+
 public class Bill {
     private String id;
     private String billingMonth; // yyyy-MM
@@ -17,6 +19,9 @@ public class Bill {
 
     private boolean paid;
     private long createdAtEpochMs;
+
+    private LocalDate bookingDate;
+    private LocalDate dueDate;
 
     private static final double WATER_RATE = 5.0;
     private static final double ELECTRIC_RATE = 8.0;
@@ -109,6 +114,22 @@ public class Bill {
 
     public void setCreatedAtEpochMs(long createdAtEpochMs) {
         this.createdAtEpochMs = createdAtEpochMs;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
     }
 
     public static double getWaterRate() {

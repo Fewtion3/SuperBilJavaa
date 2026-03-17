@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.YearMonth;
 import java.util.Comparator;
 
@@ -38,6 +40,8 @@ public class BillingView {
 
         ObservableList<Bill> bills = FXCollections.observableArrayList(billService.getBills());
 
+        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("dd MMM yyyy");
+
         TextField monthField = new TextField(YearMonth.now().toString());
         monthField.setPromptText("เดือน (yyyy-MM)");
 
@@ -55,6 +59,22 @@ public class BillingView {
 
         TextField elecField = new TextField();
         elecField.setPromptText("ค่าไฟ (หน่วย)");
+
+        DatePicker bookingDatePicker = new DatePicker(LocalDate.now());
+        bookingDatePicker.setPromptText("Booking date");
+
+        DatePicker dueDatePicker = new DatePicker(LocalDate.now().plusDays(7));
+        dueDatePicker.setPromptText("Due date");
+
+        bookingDatePicker.valueProperty().addListener((obs, o, n) -> {
+            if (n == null) return;
+            // Suggest due date if user hasn't chosen a custom one yet, or if due was before booking
+            LocalDate currentDue = dueDatePicker.getValue();
+            LocalDate suggested = n.plusDays(7);
+            if (currentDue == null || currentDue.isBefore(n) || (o != null && currentDue.equals(o.plusDays(7)))) {
+                dueDatePicker.setValue(suggested);
+            }
+        });
 
         Label totalPreview = new Label("รวม: -");
 
@@ -130,7 +150,17 @@ public class BillingView {
             d.getValue().isPaid() ? settings.t("bill.paid") : settings.t("bill.unpaid")
         ));
 
-        table.getColumns().addAll(monthCol, roomCol, tenantCol, rentCol, waterCostCol, elecCostCol, totalCol, paidCol);
+        TableColumn<Bill, String> bookingCol = new TableColumn<>("Booking Date");
+        bookingCol.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(
+            d.getValue().getBookingDate() == null ? "-" : d.getValue().getBookingDate().format(dateFmt)
+        ));
+
+        TableColumn<Bill, String> dueCol = new TableColumn<>("Due Date");
+        dueCol.setCellValueFactory(d -> new javafx.beans.property.SimpleStringProperty(
+            d.getValue().getDueDate() == null ? "-" : d.getValue().getDueDate().format(dateFmt)
+        ));
+
+        table.getColumns().addAll(monthCol, roomCol, tenantCol, bookingCol, dueCol, rentCol, waterCostCol, elecCostCol, totalCol, paidCol);
         table.setPrefHeight(420);
 
         table.getSelectionModel().selectedItemProperty().addListener((obs, o, n) -> {
@@ -139,6 +169,8 @@ public class BillingView {
             rentField.setText(String.valueOf(n.getRent()));
             waterField.setText(String.valueOf(n.getWaterUnit()));
             elecField.setText(String.valueOf(n.getElectricUnit()));
+            bookingDatePicker.setValue(n.getBookingDate() == null ? LocalDate.now() : n.getBookingDate());
+            dueDatePicker.setValue(n.getDueDate() == null ? bookingDatePicker.getValue().plusDays(7) : n.getDueDate());
             updateTotal.run();
         });
 
@@ -148,16 +180,38 @@ public class BillingView {
             try {
                 Room room = roomBox.getValue();
                 Tenant tenant = tenantBox.getValue();
+                LocalDate bookingDate = bookingDatePicker.getValue();
+                LocalDate dueDate = dueDatePicker.getValue();
+
+                if (room == null) {
+                    showError("ข้อมูลไม่ครบ", "กรุณาเลือกห้อง");
+                    return;
+                }
+                if (bookingDate == null || dueDate == null) {
+                    showError("ข้อมูลไม่ครบ", "กรุณาเลือกวันที่ให้ครบถ้วน");
+                    return;
+                }
+                if (dueDate.isBefore(bookingDate)) {
+                    showError("วันที่ไม่ถูกต้อง", "วันครบกำหนดต้องไม่ก่อนวันเริ่มเช่า");
+                    return;
+                }
+                if (waterField.getText() == null || waterField.getText().isBlank() || elecField.getText() == null || elecField.getText().isBlank()) {
+                    showError("ข้อมูลไม่ครบ", "กรุณากรอกหน่วยน้ำและหน่วยไฟ");
+                    return;
+                }
+
                 double water = Double.parseDouble(waterField.getText());
                 double elec = Double.parseDouble(elecField.getText());
 
-                billService.createMonthlyBill(monthField.getText(), room, tenant, water, elec);
+                billService.createMonthlyBill(monthField.getText(), room, tenant, water, elec, bookingDate, dueDate);
                 bills.setAll(billService.getBills().stream()
                     .sorted(Comparator.comparingLong(Bill::getCreatedAtEpochMs).reversed())
                     .toList());
 
                 waterField.clear();
                 elecField.clear();
+                bookingDatePicker.setValue(LocalDate.now());
+                dueDatePicker.setValue(LocalDate.now().plusDays(7));
                 totalPreview.setText("รวม: -");
             } catch (Exception ex) {
                 showError("ข้อมูลไม่ถูกต้อง", "กรุณากรอกหน่วยน้ำ/ไฟเป็นตัวเลข");
@@ -182,7 +236,7 @@ public class BillingView {
             table.refresh();
         });
 
-        HBox form = new HBox(10, monthField, roomBox, tenantBox, rentField, waterField, elecField, addBtn, togglePaidBtn, deleteBtn, totalPreview);
+        HBox form = new HBox(10, monthField, roomBox, tenantBox, bookingDatePicker, dueDatePicker, rentField, waterField, elecField, addBtn, togglePaidBtn, deleteBtn, totalPreview);
         VBox card = new VBox(15, form, table);
         card.getStyleClass().add("card");
 
